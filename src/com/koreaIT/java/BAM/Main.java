@@ -26,7 +26,19 @@ public class Main {
 				break;
 				
 			}else if(cmd.equals("article list")) {
-				System.out.println("게시글이 없습니다.");
+				if (articles.size() == 0) {
+					System.out.println("게시글이 없습니다.");
+					
+				}else {
+					System.out.println("번호	|	제목");
+					for(int i = articles.size() -1; i >= 0  ; i--) {
+						Article article = articles.get(i);
+						
+						
+						System.out.printf("%d	|	%s\n", article.id, article.title);
+					}
+					
+				}
 				
 			}else if(cmd.equals("article write")) {
 				int id = lastArticleId + 1;
@@ -38,19 +50,18 @@ public class Main {
 				
 				Article article = new Article(id,title,body);
 				
-//				System.out.printf("제목 : %s \n내용 : %s\n",tittle,body);
+				articles.add(article);
+				
+				
+				
+//				System.out.printf("제목 : %s \n내용 : %s\n",title,body);
 				System.out.printf("%d번 글이 생성되었습니다.\n",id);
+				
 				
 			}else {
 				System.out.println("존재하지 않는 명령어 입니다. ");
 				
 			}
-			
-			
-			
-			
-			
-			
 			
 		}
 		
