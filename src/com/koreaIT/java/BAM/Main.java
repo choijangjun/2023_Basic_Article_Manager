@@ -7,14 +7,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	static List<Article> articles;
+	
+	static {
+		articles = new ArrayList<>();		
+	}
+	static int lastArticleId = 0;
+	static int id = 0;
+	static int look;
+	
 	public static void main(String[] args) {
 		System.out.println("== 프로그램 시작==");
 
 		Scanner sc = new Scanner(System.in);
 
-		int lastArticleId = 0;
 
-		List<Article> articles = new ArrayList<>();
+		makeTestData();
 
 		while (true) {
 			System.out.printf("명령어) ");
@@ -36,13 +44,13 @@ public class Main {
 					for (int i = articles.size() - 1; i >= 0; i--) {
 						Article article = articles.get(i);
 
-						System.out.printf("%d	|	%s	|%s|	%d\n", article.id, article.title , article.now.substring(0,9), article.look);
+						System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.title , article.now.substring(0,9), article.look);
 					}
 
 				}
 
 			} else if (cmd.equals("article write")) {
-				int id = lastArticleId + 1;
+				id = lastArticleId + 1;
 				lastArticleId = id;
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
@@ -59,6 +67,7 @@ public class Main {
 
 //				System.out.printf("제목 : %s \n내용 : %s\n",title,body);
 				System.out.printf("%d번 글이 생성되었습니다.\n", id);
+				
 
 			}else if (cmd.startsWith("article detail ")) {
 				
@@ -174,6 +183,35 @@ public class Main {
 		sc.close();
 
 	}
+
+	private static void makeTestData() {
+		
+		for (int i = 1; i <=3; i++) {
+			id = lastArticleId + 1;
+			lastArticleId = id;
+			
+			
+			String title = "Exam_title" + id;
+			
+			String body = "Exam_body" + id;
+			
+			
+			String now = Util.getDate();
+			
+			look = id * 10;
+			
+			Article article = new Article(id, now, look, title, body);
+			
+			articles.add(article);
+			System.out.printf("%d번 글이 생성되었습니다.\n", id);
+			
+		}
+
+
+		
+		
+		
+	}
 }
 
 class Article {
@@ -186,7 +224,7 @@ class Article {
 	Article(int id, String now, int look, String title, String body) {
 		this.id = id;
 		this.now = now;
-		this.look = 0;
+		this.look = look;
 		this.title = title;
 		this.body = body;
 	}
