@@ -29,6 +29,19 @@ public class App {
 		while (true) {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine().trim();
+			
+			if (cmd.equals("member join")) {
+				System.out.printf("로그인 아이디 :");
+				String LoginId = sc.nextLine();
+				System.out.printf("로그인 비밀번호 :");
+				String LoginPw = sc.nextLine();
+				System.out.printf("로그인 비밀번호 확인 :");
+				String reLoginPw = sc.nextLine();
+				System.out.printf("이름 :");
+				String name = sc.nextLine();
+				
+				System.out.println();
+			}
 
 			if (cmd.length() == 0) {
 				System.out.println("명령어를 입력해주세요.");
@@ -79,36 +92,35 @@ public class App {
 				}
 
 				String searchKeyword = cmd.substring("article list".length()).trim();
-				
-				List<Article> printArticles = articles;
+
+				List<Article> printArticles = new ArrayList<>(articles);
 
 				if (searchKeyword.length() > 0) {
 					System.out.println("검색어 : " + searchKeyword);
-					
-					printArticles = new ArrayList<>();
-					
+
+					printArticles.clear();
+
 					for (Article article : articles) {
 						if (article.title.contains(searchKeyword)) {
 							printArticles.add(article);
 
 						}
 					}
-					if(printArticles.size() == 0) {
+					if (printArticles.size() == 0) {
 						System.out.println("검색결과가 없습니다.");
 						continue;
 					}
 
-				} 
+				}
 
-					System.out.println("번호	|	제목	|	 날짜	 |	조회수");
-					Collections.reverse(printArticles);
-					for (int i = printArticles.size() - 1; i >= 0; i--) {
-						Article article = printArticles.get(i);
-						System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.title,
-								article.now.substring(0, 9), article.look);
+				System.out.println("번호	|	제목	|	 날짜	 |	조회수");
+				Collections.reverse(printArticles);
+				for (int i = printArticles.size() - 1; i >= 0; i--) {
+					Article article = printArticles.get(i);
+					System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.title,
+							article.now.substring(0, 9), article.look);
 
-					}
-				
+				}
 
 			} else if (cmd.startsWith("article detail ")) {
 
