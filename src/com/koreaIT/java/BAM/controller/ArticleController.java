@@ -16,8 +16,8 @@ public class ArticleController extends Controller{
 	private int id;
 	String cmd;
 	
-	public ArticleController(List<Article> articles, Scanner sc) {
-		this.articles = articles;
+	public ArticleController(Scanner sc) {
+		this.articles = new ArrayList<>();
 		this.sc = sc;
 		this.lastArticleId = 3;
 
@@ -43,8 +43,9 @@ public class ArticleController extends Controller{
 			doDelete();
 			break;	
 		default:
-			System.out.println("존재하지 않는 명령어 입니다.");
+			System.out.println("존재하지 않는 명령어입니다.");
 			break;
+		 
 		}
 		
 		

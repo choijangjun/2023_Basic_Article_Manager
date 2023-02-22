@@ -9,20 +9,11 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.controller.ArticleController;
 import com.koreaIT.java.BAM.controller.Controller;
 import com.koreaIT.java.BAM.controller.MemberController;
-import com.koreaIT.java.BAM.dto.Article;
-import com.koreaIT.java.BAM.dto.Member;
+
 import com.koreaIT.java.BAM.util.Util;
 
 public class App {
-	private List<Article> articles;
-	private List<Member> members;
-
-	App() {
-		articles = new ArrayList<>();
-		members = new ArrayList<>();
-
-	}
-
+	
 	int id = 0;
 	int look;
 
@@ -31,11 +22,9 @@ public class App {
 
 		Scanner sc = new Scanner(System.in);
 
-		MemberController memberController = new MemberController(members, sc);
-		ArticleController articleController = new ArticleController(articles, sc);
+		MemberController memberController = new MemberController(sc);
+		ArticleController articleController = new ArticleController(sc);
 		articleController.makeTestData();
-		int lastArticleId = 3;
-		int lastMemberId = 0;
 		while (true) {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine().trim();
