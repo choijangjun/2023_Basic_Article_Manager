@@ -6,11 +6,12 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
-public class MemberController {
+public class MemberController extends Controller{
 
-	List<Member> members;
-	Scanner sc;
-	int lastMemberId;
+	private List<Member> members;
+	private Scanner sc;
+	private int lastMemberId;
+	String cmd;
 
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
@@ -18,8 +19,19 @@ public class MemberController {
 		int lastMemberId = 0;
 
 	}
+	public void doAction(String cmd, String methodName) {
+		
+		switch(methodName) {
+		case "join":
+			doJoin();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어입니다.");
+			break;
+		}
+	}
 
-	public void doJoin() {
+	private void doJoin() {
 		int id = lastMemberId + 1;
 		lastMemberId = id;
 		String regDate = Util.getDate();
@@ -75,5 +87,7 @@ public class MemberController {
 
 		return true;
 	}
+
+	
 
 }

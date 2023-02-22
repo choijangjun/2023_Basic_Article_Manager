@@ -9,11 +9,12 @@ import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
-public class ArticleController {
-	List<Article> articles;
-	Scanner sc;
-	int lastArticleId;
-	int id;
+public class ArticleController extends Controller{
+	private List<Article> articles;
+	private Scanner sc;
+	private int lastArticleId;
+	private int id;
+	String cmd;
 	
 	public ArticleController(List<Article> articles, Scanner sc) {
 		this.articles = articles;
@@ -22,7 +23,34 @@ public class ArticleController {
 
 	}
 
-	public void doWrite() {
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
+		
+		switch(methodName) {
+		case "write":
+			doWrite();
+			break;
+		case "list":
+			showList();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "delete":
+			doDelete();
+			break;	
+		default:
+			System.out.println("존재하지 않는 명령어 입니다.");
+			break;
+		}
+		
+		
+	}
+	
+	private void doWrite() {
 		int id = lastArticleId + 1;
 		lastArticleId = id;
 		System.out.printf("제목 : ");
@@ -42,12 +70,10 @@ public class ArticleController {
 
 	}
 
-	public void showList(String cmd) {
-
+	private void showList() {
 		if (articles.size() == 0) {
-			System.out.println("게시글이 없습니다.");
+			System.out.println("게시글이 없습니다");
 			return; // -> 리턴으로 함수를 종료시키되 넘겨주는 값은 없다.
-
 		}
 
 		String searchKeyword = cmd.substring("article list".length()).trim();
@@ -62,29 +88,28 @@ public class ArticleController {
 			for (Article article : articles) {
 				if (article.title.contains(searchKeyword)) {
 					printArticles.add(article);
-
 				}
 			}
 			if (printArticles.size() == 0) {
-				System.out.println("검색결과가 없습니다.");
+				System.out.println("검색결과가 없습니다");
 				return;
 			}
-
 		}
 
-		System.out.println("번호	|	제목	|	 날짜	 |	조회수");
+		System.out.println("번호	|	제목	|		날짜		|	조회");
 		Collections.reverse(printArticles);
-		for (int i = printArticles.size() - 1; i >= 0; i--) {
-			Article article = printArticles.get(i);
-			System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.title,
-					article.regDate.substring(0, 9), article.look);
-
+		for (Article article : printArticles) {
+			System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.title, article.regDate,
+					article.look);
 		}
-
 	}
 
-	public void showDetail(String cmd) {
+	private void showDetail() {
 		String[] cmdBits = cmd.split(" ");
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -102,8 +127,12 @@ public class ArticleController {
 
 	}
 
-	public void doModify(String cmd) {
+	private void doModify() {
 		String[] cmdBits = cmd.split(" ");
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
 		int id = Integer.parseInt(cmdBits[2]);
 
 
@@ -128,8 +157,12 @@ public class ArticleController {
 		System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
 	}
 
-	public void doDelete(String cmd) {
+	private void doDelete() {
 		String[] cmdBits = cmd.split(" ");
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -170,6 +203,30 @@ public class ArticleController {
 
 		return null;
 	}
+	public void makeTestData() {
+		int lastArticleId = 0;
+
+		for (int i = 1; i <= 3; i++) {
+			id = lastArticleId + 1;
+			lastArticleId = id;
+
+			String title = "title" + id;
+
+			String body = "body" + id;
+
+			String regDate = Util.getDate();
+
+			int look = id * 10;
+
+			Article article = new Article(id, regDate, look, title, body);
+
+			articles.add(article);
+
+		}
+		System.out.printf("3개의 테스트 데이터를 생성하였습니다.\n");
+
+	}
+
 
 	
 }
