@@ -71,7 +71,7 @@ public class ArticleController extends Controller{
 
 	private void showList() {
 		if (articles.size() == 0) {
-			System.out.println("게시글이 없습니다");
+			System.out.println("게시글이 없습니다.");
 			return; // -> 리턴으로 함수를 종료시키되 넘겨주는 값은 없다.
 		}
 
@@ -90,7 +90,7 @@ public class ArticleController extends Controller{
 				}
 			}
 			if (printArticles.size() == 0) {
-				System.out.println("검색결과가 없습니다");
+				System.out.println("검색결과가 없습니다.");
 				return;
 			}
 		}
@@ -192,7 +192,7 @@ public class ArticleController extends Controller{
 		return null;
 	}
 	public void makeTestData() {
-		System.out.println("게시물 테스트 데이터를 생성합니다");
+		System.out.println("게시물 테스트 데이터를 생성합니다.");
 		articles.add(new Article(1, Util.getDate(), "제목1", "내용1", 10));
 		articles.add(new Article(2, Util.getDate(), "제목2", "내용2", 20));
 		articles.add(new Article(3, Util.getDate(), "제목3", "내용3", 30));
