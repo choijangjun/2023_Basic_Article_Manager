@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.dto.Article;
-import com.koreaIT.java.BAM.dto.Member;
+
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller{
 	private List<Article> articles;
 	private Scanner sc;
 	private int lastArticleId;
-	private int id;
-	String cmd;
+	private String cmd;
 	
 	public ArticleController(Scanner sc) {
 		this.articles = new ArrayList<>();
@@ -60,9 +59,8 @@ public class ArticleController extends Controller{
 		String body = sc.nextLine();
 
 		String regDate = Util.getDate();
-		int look = 0;
 
-		Article article = new Article(id, regDate, look, title, body);
+		Article article = new Article(id, regDate,  title, body);
 
 		articles.add(article);
 
@@ -181,18 +179,7 @@ public class ArticleController extends Controller{
 
 		
 	}
-	private int getArticleIdById(int id) {
-		for (int i = 0; i < articles.size(); i++) {
-			Article article = articles.get(i);
-
-			if (article.id == id) {
-				return i;
-			}
-			i++;
-		}
-
-		return -1;
-	}
+	
 
 	private Article getArticleById(int id) {
 		for (Article article : articles) {
@@ -205,27 +192,10 @@ public class ArticleController extends Controller{
 		return null;
 	}
 	public void makeTestData() {
-		int lastArticleId = 0;
-
-		for (int i = 1; i <= 3; i++) {
-			id = lastArticleId + 1;
-			lastArticleId = id;
-
-			String title = "title" + id;
-
-			String body = "body" + id;
-
-			String regDate = Util.getDate();
-
-			int look = id * 10;
-
-			Article article = new Article(id, regDate, look, title, body);
-
-			articles.add(article);
-
-		}
-		System.out.printf("3개의 테스트 데이터를 생성하였습니다.\n");
-
+		System.out.println("게시물 테스트 데이터를 생성합니다");
+		articles.add(new Article(1, Util.getDate(), "제목1", "내용1", 10));
+		articles.add(new Article(2, Util.getDate(), "제목2", "내용2", 20));
+		articles.add(new Article(3, Util.getDate(), "제목3", "내용3", 30));
 	}
 
 

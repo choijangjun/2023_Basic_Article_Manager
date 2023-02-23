@@ -7,36 +7,41 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
-public class MemberController extends Controller{
+public class MemberController extends Controller {
 
 	private List<Member> members;
 	private Scanner sc;
 	private int lastMemberId;
-	String cmd;
 
 	public MemberController(Scanner sc) {
 		this.members = new ArrayList<>();
 		this.sc = sc;
-		int lastMemberId = 0;
+		this.lastMemberId = 0;
 
 	}
+
 	public void doAction(String cmd, String methodName) {
-		
-		switch(methodName) {
+
+		switch (methodName) {
 		case "join":
 			doJoin();
+			break;
+		case "login":
+			doLogin();
 			break;
 		default:
 			System.out.println("존재하지 않는 명령어입니다.");
 			break;
 		}
 	}
+	
+
 
 	private void doJoin() {
 		int id = lastMemberId + 1;
 		lastMemberId = id;
 		String regDate = Util.getDate();
-
+		String loginPw = null;
 		String loginId = null;
 		while (true) {
 			System.out.printf("로그인 아이디 : ");
@@ -50,9 +55,11 @@ public class MemberController extends Controller{
 			break;
 		}
 
-		String loginPw = null;
-		String loginPwChk = null;
+		
 		while (true) {
+			
+			
+			String loginPwChk = null;
 			System.out.printf("로그인 비밀번호 : ");
 			loginPw = sc.nextLine();
 			System.out.printf("로그인 비밀번호 확인 : ");
@@ -78,17 +85,49 @@ public class MemberController extends Controller{
 
 	}
 
+	private void doLogin() {
+		
+		System.out.printf("로그인 아이디 : ");
+		String loginId = sc.nextLine();
+		System.out.printf("로그인 비밀번호 : ");
+		String loginPw = sc.nextLine();
+		
+		Member member = getMemberByLoginId(loginId);
+		
+		
+		if (member == null ) {
+			System.out.println("존재하지 않는 아이디입니다.");
+			return;
+		}
+		
+		if(member.loginPw.equals(loginPw) == false) {
+			System.out.println("비밀번호를 확인해주세요.");
+			return;
+		}
+		
+		System.out.printf("로그인 성공! %s님 환영합니다.\n", member.name);
+	}
+	
+	private Member getMemberByLoginId(String loginId) {
+		
+		for(Member member : members) {
+			if(member.loginId.equals(loginId)) {
+				return member;
+			}
+		}
+		
+		return null;
+	}
+
 	private boolean loginIdDupChk(String loginId) {
 
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return false;
-			}
+		Member member = getMemberByLoginId(loginId);
+		
+		if (member != null) {
+			return false;
 		}
 
 		return true;
 	}
-
-	
 
 }

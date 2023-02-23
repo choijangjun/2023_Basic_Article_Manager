@@ -1,30 +1,31 @@
 package com.koreaIT.java.BAM;
 
-import java.util.ArrayList;
 
-import java.util.Collections;
-import java.util.List;
+
+
+
+
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.controller.ArticleController;
 import com.koreaIT.java.BAM.controller.Controller;
 import com.koreaIT.java.BAM.controller.MemberController;
 
-import com.koreaIT.java.BAM.util.Util;
+
 
 public class App {
 	
-	int id = 0;
-	int look;
+
 
 	public void run() {
 		System.out.println("== 프로그램 시작==");
-
 		Scanner sc = new Scanner(System.in);
 
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
+		
 		articleController.makeTestData();
+		
 		while (true) {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine().trim();
