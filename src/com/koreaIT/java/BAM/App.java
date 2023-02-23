@@ -1,21 +1,12 @@
 package com.koreaIT.java.BAM;
 
-
-
-
-
-
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.controller.ArticleController;
 import com.koreaIT.java.BAM.controller.Controller;
 import com.koreaIT.java.BAM.controller.MemberController;
 
-
-
 public class App {
-	
-
 
 	public void run() {
 		System.out.println("== 프로그램 시작==");
@@ -23,10 +14,10 @@ public class App {
 
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
-		
+
 		memberController.makeTestData();
 		articleController.makeTestData();
-		
+
 		while (true) {
 			System.out.printf("명령어) ");
 			String cmd = sc.nextLine().trim();
@@ -39,12 +30,12 @@ public class App {
 
 			}
 			String[] cmdBits = cmd.split(" ");
-			
-			if(cmdBits.length == 1) {
+
+			if (cmdBits.length == 1) {
 				System.out.println("명령어를 확인해주세요.");
 				continue;
 			}
-			
+
 			String controllerName = cmdBits[0];
 			String methodName = cmdBits[1];
 
