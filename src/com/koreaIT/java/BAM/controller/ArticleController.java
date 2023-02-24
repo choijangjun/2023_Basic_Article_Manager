@@ -14,11 +14,14 @@ public class ArticleController extends Controller {
 	private Scanner sc;
 	private int lastArticleId;
 	private String cmd;
+	
 
 	public ArticleController(Scanner sc) {
 		this.articles = new ArrayList<>();
 		this.sc = sc;
 		this.lastArticleId = 3; 
+		
+
 
 	}
 
@@ -50,6 +53,12 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite() {
+		
+		if (isLogined() == false) {
+			System.out.println("로그인 후 이용해주세요.");
+			return;
+		}
+		
 		int id = lastArticleId + 1;
 		lastArticleId = id;
 		System.out.printf("제목 : ");

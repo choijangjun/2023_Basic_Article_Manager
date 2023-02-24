@@ -13,13 +13,11 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private Scanner sc;
 	private int lastMemberId;
-	private Member loginedMember;
 
 	public MemberController(Scanner sc) {
 		this.members = new ArrayList<>();
 		this.sc = sc;
 		this.lastMemberId = 3;
-		this.loginedMember = null;
 
 	}
 
@@ -45,10 +43,12 @@ public class MemberController extends Controller {
 	}
 
 	private void doJoin() {
-		if (loginedMember != null) {
+
+		if (isLogined()) {
 			System.out.println("로그아웃 후 이용해주세요.");
 			return;
 		}
+
 		int id = lastMemberId + 1;
 		lastMemberId = id;
 		String regDate = Util.getDate();
@@ -104,10 +104,12 @@ public class MemberController extends Controller {
 		System.out.printf("로그인 아이디 : ");
 		String loginId = sc.nextLine();
 		Member member = getMemberByLoginId(loginId);
+
 		if (member == null) {
 			System.out.println("존재하지 않는 아이디입니다.");
 			return;
 		}
+
 		System.out.printf("로그인 비밀번호 : ");
 		String loginPw = sc.nextLine();
 
@@ -118,7 +120,7 @@ public class MemberController extends Controller {
 			return;
 		}
 
-		this.loginedMember = member;
+		loginedMember = member;
 
 		System.out.printf("로그인 성공! %s님 환영합니다.\n", member.name);
 
@@ -129,12 +131,8 @@ public class MemberController extends Controller {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
 		}
-		this.loginedMember = null;
+		loginedMember = null;
 		System.out.println("로그아웃 되셨습니다.");
-	}
-
-	private boolean isLogined() {
-		return loginedMember != null;
 	}
 
 	private void showProfile() {
@@ -142,13 +140,11 @@ public class MemberController extends Controller {
 			System.out.println("로그인 후 이용해주세요.");
 			return;
 		}
-		
+
 		System.out.println("== 내 정보 ==");
-		
-		System.out.printf("로그인 아이디 : %s\n",loginedMember.loginId );
+		System.out.printf("로그인 아이디 : %s\n", loginedMember.loginId);
 		System.out.printf("이름 : %s\n", loginedMember.name);
-		
-		
+
 	}
 
 	private Member getMemberByLoginId(String loginId) {
