@@ -27,10 +27,6 @@ public class ArticleController extends Controller {
 
 		switch (methodName) {
 		case "write":
-			if (isLogined() == false) {
-				System.out.println("로그인 후 이용해주세요.");
-				break;
-			}
 			doWrite();
 			break;
 		case "list":
@@ -40,17 +36,9 @@ public class ArticleController extends Controller {
 			showDetail();
 			break;
 		case "modify":
-			if (isLogined() == false) {
-				System.out.println("로그인 후 이용해주세요.");
-				break;
-			}
 			doModify();
 			break;
 		case "delete":
-			if (isLogined() == false) {
-				System.out.println("로그인 후 이용해주세요.");
-				break;
-			}
 			doDelete();
 			break;
 		default:
@@ -72,7 +60,7 @@ public class ArticleController extends Controller {
 
 		String regDate = Util.getDate();
 
-		Article article = new Article(id, regDate, loginedMember.id, title, body);
+		Article article = new Article(id, regDate, loginedMember.id,loginedMember.name, title, body);
 
 		articles.add(article);
 
@@ -82,7 +70,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void showList() {
-		
+
 		if (articles.size() == 0) {
 			System.out.println("게시글이 없습니다.");
 			return; // -> 리턴으로 함수를 종료시키되 넘겨주는 값은 없다.
@@ -111,8 +99,8 @@ public class ArticleController extends Controller {
 		System.out.println("번호	|	제목	|		날짜		|    작성자	|      조회");
 		Collections.reverse(printArticles);
 		for (Article article : printArticles) {
-			System.out.printf("%d	|	%s	|	%s	|	%d	|	%d\n", article.id, article.title, article.regDate,
-					article.memberId, article.look);
+			System.out.printf("%d	|	%s	|	%s	|	%s	|	%d\n", article.id, article.title, article.regDate,
+					article.memberName, article.look);
 		}
 	}
 
@@ -134,7 +122,7 @@ public class ArticleController extends Controller {
 		System.out.printf("번호 : %d\n", foundArticle.id);
 		System.out.printf("날짜 : %s\n", foundArticle.regDate);
 		System.out.printf("제목 : %s\n", foundArticle.title);
-		System.out.printf("작성자 : %s\n", foundArticle.memberId);
+		System.out.printf("작성자 : %s\n", foundArticle.memberName);
 		System.out.printf("내용 : %s\n", foundArticle.body);
 		System.out.printf("조회수 : %d\n", foundArticle.look);
 
@@ -146,9 +134,7 @@ public class ArticleController extends Controller {
 			System.out.println("명령어를 확인해주세요.");
 			return;
 		}
-	
-		
-		
+
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -157,12 +143,12 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
-		
-		if (loginedMember.id != foundArticle.memberId) {
+
+		if (foundArticle.memberId != loginedMember.id) {
 			System.out.println("회원님의 글이 아닙니다.");
 			return;
 		}
-		
+
 		System.out.printf("수정할 제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("수정할 내용 : ");
@@ -184,7 +170,7 @@ public class ArticleController extends Controller {
 			System.out.println("명령어를 확인해주세요.");
 			return;
 		}
-		
+
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -193,7 +179,7 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
 			return;
 		}
-		
+
 		if (loginedMember.id != foundArticle.memberId) {
 			System.out.println("회원님의 글이 아닙니다.");
 			return;
@@ -220,9 +206,9 @@ public class ArticleController extends Controller {
 
 	public void makeTestData() {
 		System.out.println("게시물 테스트 데이터를 생성합니다.");
-		articles.add(new Article(1, Util.getDate(), 1, "제목1", "내용1", 10));
-		articles.add(new Article(2, Util.getDate(), 2, "제목2", "내용2", 20));
-		articles.add(new Article(3, Util.getDate(), 2, "제목3", "내용3", 30));
+		articles.add(new Article(1, Util.getDate(), 1, "고길동", "제목1", "내용1", 10));
+		articles.add(new Article(2, Util.getDate(), 2, "둘리", "제목2", "내용2", 20));
+		articles.add(new Article(3, Util.getDate(), 2, "둘리", "제목3", "내용3", 30));
 	}
 
 }
