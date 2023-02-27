@@ -73,9 +73,15 @@ public class App {
 					continue;
 				}
 				break;
-
+			case "article/list":
+			case "article/detail":
+				break;
+			default:
+				System.out.println("존재하지 않는 명령어입니다.");
+				break;
+				
 			}
-
+			
 			controller.doAction(cmd, methodName);
 
 		}
