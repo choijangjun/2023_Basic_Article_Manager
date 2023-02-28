@@ -1,6 +1,5 @@
 package com.koreaIT.java.BAM.controller;
 
-import java.util.ArrayList;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,12 +11,12 @@ import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
-	private List<Article> articles;
+//	private List<Article> articles;
 	private Scanner sc;
 	private String cmd;
 
 	public ArticleController(Scanner sc) {
-		this.articles = Container.articleDao.articles;
+//		this.articles = Container.articleDao.articles;
 		this.sc = sc;
 
 	}
@@ -65,29 +64,15 @@ public class ArticleController extends Controller {
 
 	private void showList() {
 
-		if (articles.size() == 0) {
-			System.out.println("게시글이 없습니다.");
-			return; // -> 리턴으로 함수를 종료시키되 넘겨주는 값은 없다.
-		}
-
 		String searchKeyword = cmd.substring("article list".length()).trim();
+		
+		System.out.println("검색어 : " + searchKeyword);
 
-		List<Article> printArticles = new ArrayList<>(articles);
+		List<Article> printArticles = Container.articleService.getPrintArticles(searchKeyword);
 
-		if (searchKeyword.length() > 0) {
-			System.out.println("검색어 : " + searchKeyword);
-
-			printArticles.clear();
-
-			for (Article article : articles) {
-				if (article.title.contains(searchKeyword)) {
-					printArticles.add(article);
-				}
-			}
-			if (printArticles.size() == 0) {
-				System.out.println("검색결과가 없습니다.");
-				return;
-			}
+		if (printArticles.size() == 0) {
+			System.out.println("게시글이 없습니다.");
+			return;
 		}
 
 		System.out.println("번호	|	제목	|		날짜		|    작성자	|      조회");
@@ -118,7 +103,7 @@ public class ArticleController extends Controller {
 		}
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = Container.articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -153,7 +138,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = Container.articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -189,7 +174,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = Container.articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -201,24 +186,15 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		int idx = articles.indexOf(foundArticle);
+		int idx = Container.articleDao.articles.indexOf(foundArticle);
 
-		articles.remove(idx);
+		Container.articleDao.remove(idx);
 
 		System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 
 	}
 
-	private Article getArticleById(int id) {
-		for (Article article : articles) {
-
-			if (article.id == id) {
-				return article;
-			}
-		}
-
-		return null;
-	}
+	
 
 	public void makeTestData() {
 		System.out.println("게시물 테스트 데이터를 생성합니다.");
