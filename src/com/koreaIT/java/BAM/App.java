@@ -86,7 +86,7 @@ public class App {
 
 		}
 
-		System.out.println("== 프로그램 끝==");
+		System.out.println("== 프로그램 종료==");
 
 		sc.close();
 
