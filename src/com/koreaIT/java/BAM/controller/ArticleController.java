@@ -1,7 +1,6 @@
 package com.koreaIT.java.BAM.controller;
 
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -76,9 +75,11 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.println("번호	|	제목	|		날짜		|    작성자	|      조회");
-		Collections.reverse(printArticles);
-		for (Article article : printArticles) {
-
+//		Collections.reverse(printArticles);
+		for (int i = printArticles.size() - 1; i >= 0; i--) {
+			
+			Article article = printArticles.get(i);
+			
 			String writerName = null;
 
 			List<Member> members = Container.memberDao.members;
