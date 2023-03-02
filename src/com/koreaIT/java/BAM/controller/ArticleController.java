@@ -7,15 +7,17 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
+import com.koreaIT.java.BAM.service.ArticleService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
-//	private List<Article> articles;
+	
 	private Scanner sc;
 	private String cmd;
+	private ArticleService articleService;
 
 	public ArticleController(Scanner sc) {
-//		this.articles = Container.articleDao.articles;
+		this.articleService = Container.articleService;
 		this.sc = sc;
 
 	}
@@ -45,7 +47,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite() {
-		int id = Container.articleDao.getLastId();
+		int id = articleService.getLastId();
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
@@ -55,7 +57,7 @@ public class ArticleController extends Controller {
 
 		Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-		Container.articleDao.add(article);
+		Container.articleService.add(article);
 
 		System.out.printf("%d번 글이 생성되었습니다.\n", id);
 
@@ -67,7 +69,7 @@ public class ArticleController extends Controller {
 		
 		System.out.println("검색어 : " + searchKeyword);
 
-		List<Article> printArticles = Container.articleService.getPrintArticles(searchKeyword);
+		List<Article> printArticles = articleService.getPrintArticles(searchKeyword);
 
 		if (printArticles.size() == 0) {
 			System.out.println("게시글이 없습니다.");
@@ -80,16 +82,7 @@ public class ArticleController extends Controller {
 			
 			Article article = printArticles.get(i);
 			
-			String writerName = null;
-
-			List<Member> members = Container.memberDao.members;
-
-			for (Member member : members) {
-				if (article.memberId == member.id) {
-					writerName = member.name;
-					break;
-				}
-			}
+			String writerName = Container.memberService.getWriterName(article.memberId);
 
 			System.out.printf("%d	|	%s	|	%s	|	%s	|	%d\n", article.id, article.title, article.regDate,
 					writerName, article.look);
@@ -104,7 +97,7 @@ public class ArticleController extends Controller {
 		}
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = Container.articleService.getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -139,7 +132,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = Container.articleService.getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -175,7 +168,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = Container.articleService.getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -187,9 +180,9 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		int idx = Container.articleDao.articles.indexOf(foundArticle);
+		articleService.remove(foundArticle);
 
-		Container.articleDao.remove(idx);
+	
 
 		System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 
@@ -199,9 +192,9 @@ public class ArticleController extends Controller {
 
 	public void makeTestData() {
 		System.out.println("게시물 테스트 데이터를 생성합니다.");
-		Container.articleDao.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 1, "제목1", "내용1", 10));
-		Container.articleDao.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 2, "제목2", "내용2", 20));
-		Container.articleDao.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 2, "제목3", "내용3", 30));
+		articleService.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 1, "제목1", "내용1", 10));
+		articleService.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 2, "제목2", "내용2", 20));
+		articleService.add(new Article(Container.articleDao.getLastId(), Util.getDate(), 2, "제목3", "내용3", 30));
 	}
 
 }

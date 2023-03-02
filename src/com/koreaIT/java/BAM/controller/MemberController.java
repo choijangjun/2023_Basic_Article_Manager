@@ -1,19 +1,19 @@
 package com.koreaIT.java.BAM.controller;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Member;
+import com.koreaIT.java.BAM.service.MemberService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class MemberController extends Controller {
 
-	private List<Member> members;
 	private Scanner sc;
+	private MemberService memberService;
 
 	public MemberController(Scanner sc) {
-		this.members = Container.memberDao.members;
+		this.memberService = Container.memberService;
 		this.sc = sc;
 
 	}
@@ -40,12 +40,12 @@ public class MemberController extends Controller {
 
 		int id = Container.memberDao.getLastId();
 		String regDate = Util.getDate();
-		String loginPw = null;
 		String loginId = null;
 		while (true) {
 			System.out.printf("로그인 아이디 : ");
 			loginId = sc.nextLine();
-			if (loginIdDupChk(loginId) == false) {
+			
+			if (memberService.loginIdDupChk(loginId) == false) {
 				System.out.printf("%s은(는) 이미 사용중인 아이디입니다.\n", loginId);
 				continue;
 
@@ -53,10 +53,12 @@ public class MemberController extends Controller {
 			System.out.printf("%s은(는) 사용가능한 아이디입니다.\n", loginId);
 			break;
 		}
+		String loginPw = null;
+		String loginPwChk = null;
+		
 
 		while (true) {
 
-			String loginPwChk = null;
 			System.out.printf("로그인 비밀번호 : ");
 			loginPw = sc.nextLine();
 			System.out.printf("로그인 비밀번호 확인 : ");
@@ -76,7 +78,7 @@ public class MemberController extends Controller {
 
 		Member member = new Member(id, regDate, loginId, loginPw, name);
 
-		Container.memberDao.add(member);
+		memberService.add(member);
 
 		System.out.printf("%s회원님 환영합니다.\n", loginId);
 
@@ -105,7 +107,7 @@ public class MemberController extends Controller {
 				break;
 			}
 
-			member = getMemberByLoginId(loginId);
+			member = memberService.getMemberByLoginId(loginId);
 
 			if (member == null) {
 				System.out.println("존재하지 않는 아이디입니다.");
@@ -139,34 +141,11 @@ public class MemberController extends Controller {
 
 	}
 
-	private Member getMemberByLoginId(String loginId) {
-
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-
-				return member;
-			}
-		}
-
-		return null;
-	}
-
-	private boolean loginIdDupChk(String loginId) {
-
-		Member member = getMemberByLoginId(loginId);
-
-		if (member != null) {
-			return false;
-		}
-
-		return true;
-	}
-
 	public void makeTestData() {
 		System.out.println("회원 테스트 데이터를 생성합니다");
-		Container.memberDao.add(new Member(Container.memberDao.getLastId(), Util.getDate(), "test1", "test1", "고길동"));
-		Container.memberDao.add(new Member(Container.memberDao.getLastId(), Util.getDate(), "test2", "test2", "둘리"));
-		Container.memberDao.add(new Member(Container.memberDao.getLastId(), Util.getDate(), "test3", "test3", "희동이"));
+		memberService.add(new Member(memberService.getLastId(), Util.getDate(), "test1", "test1", "고길동"));
+		memberService.add(new Member(memberService.getLastId(), Util.getDate(), "test2", "test2", "둘리"));
+		memberService.add(new Member(memberService.getLastId(), Util.getDate(), "test3", "test3", "희동이"));
 	}
 
 }
