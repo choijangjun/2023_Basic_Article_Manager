@@ -8,6 +8,7 @@ import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.service.ArticleService;
+import com.koreaIT.java.BAM.service.MemberService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
@@ -15,9 +16,11 @@ public class ArticleController extends Controller {
 	private Scanner sc;
 	private String cmd;
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController(Scanner sc) {
 		this.articleService = Container.articleService;
+		this.memberService = Container.memberService;
 		this.sc = sc;
 
 	}
@@ -82,7 +85,7 @@ public class ArticleController extends Controller {
 			
 			Article article = printArticles.get(i);
 			
-			String writerName = Container.memberService.getWriterName(article.memberId);
+			String writerName = memberService.getWriterName(article.memberId);
 
 			System.out.printf("%d	|	%s	|	%s	|	%s	|	%d\n", article.id, article.title, article.regDate,
 					writerName, article.look);
